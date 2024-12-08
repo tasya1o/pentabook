@@ -1,0 +1,190 @@
+{% extends "customer/base.html" %}
+
+{% block title %}Shopping Cart - Penta Book{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="cart-card mb-4 shadow">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="m-0">Shopping Cart</h4>
+                    {% if cart_items %}
+                    <form method="POST" action="{{ url_for('clear_cart') }}">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            <i class="fas fa-trash me-2"></i>Clear Cart
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+
+                {% if cart_items %}
+                    {% for item in cart_items %}
+                    <div class="cart-item mb-3">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                {% if item['img_url'] %}
+                                    <img src="{{ url_for('static', filename='uploads/' + item['img_url']) }}" 
+                                         alt="{{ item['book_name'] }}"
+                                         class="cart-item-image">
+                                {% else %}
+                                    <div class="cart-item-placeholder">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col">
+                                <h6 class="mb-1">{{ item['book_name'] }}</h6>
+                                <p class="text-muted mb-0 small">by {{ item['author'] }}</p>
+                            </div>
+                            <div class="col-auto text-end">
+                                <div class="price mb-1">{{ format_currency(item['price']) }}</div>
+                                <div class="quantity small text-muted">
+                                    Qty: {{ item['quantity'] }}
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="total fw-bold">
+                                    {{ format_currency(item['price'] * item['quantity']) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if not loop.last %}
+                        <div class="divider my-3"></div>
+                    {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-5">
+                        <div class="empty-cart-icon mb-3">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                        <h5>Your cart is empty</h5>
+                        <p class="text-muted">Discover our amazing collection of books!</p>
+                        <a href="{{ url_for('buyer_index') }}" class="btn btn-burgundy mt-2">
+                            Continue Shopping
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if cart_items %}
+        <div class="col-lg-4">
+            <div class="cart-card cart-summary shadow">
+                <h5 class="mb-4">Order Summary</h5>
+                {% set total = namespace(value=0) %}
+                {% for item in cart_items %}
+                    {% set total.value = total.value + (item['price'] * item['quantity']) %}
+                {% endfor %}
+                
+                <div class="summary-item d-flex justify-content-between mb-3">
+                    <span class="text-muted">Subtotal</span>
+                    <span>{{ format_currency(total.value) }}</span>
+                </div>
+                <div class="summary-item d-flex justify-content-between mb-3">
+                    <span class="text-muted">Shipping</span>
+                    <span class="text-success">Free</span>
+                </div>
+                <div class="divider my-3"></div>
+                <div class="summary-item d-flex justify-content-between mb-4">
+                    <span class="fw-bold">Total</span>
+                    <span class="fw-bold fs-5">{{ format_currency(total.value) }}</span>
+                </div>
+                <a href="{{ url_for('checkout') }}" class="btn btn-burgundy w-100">
+                    Proceed to Checkout
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<style>
+    .cart-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    .cart-item-image {
+        width: 80px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .cart-item-placeholder {
+        width: 80px;
+        height: 100px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #adb5bd;
+        font-size: 1.5rem;
+    }
+
+    .divider {
+        height: 1px;
+        background: #f1f1f1;
+    }
+
+    .empty-cart-icon {
+        font-size: 3rem;
+        color: #dee2e6;
+        background: #f8f9fa;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+
+    .btn-burgundy {
+        background: #8B2635;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+
+    .btn-burgundy:hover {
+        background: #7a1f2d;
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(139, 38, 53, 0.2);
+    }
+
+    .cart-summary {
+        position: sticky;
+        top: 20px;
+    }
+
+    .price {
+        color: #8B2635;
+        font-weight: 500;
+    }
+
+    .total {
+        color: #8B2635;
+        font-size: 1.1rem;
+    }
+
+    .cart-item:hover {
+        background: #fafafa;
+        border-radius: 8px;
+        transition: background 0.2s;
+    }
+
+    .summary-item {
+        font-size: 0.95rem;
+    }
+</style>
+{% endblock %}

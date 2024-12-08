@@ -1,0 +1,86 @@
+{% extends "customer/base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+    <h2>Admin Dashboard</h2>
+
+    <h3>Buyers</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>DOB</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Address</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for buyer in buyers %}
+            <tr>
+                <td>{{ buyer.buyer_id }}</td>
+                <td>{{ buyer.username }}</td>
+                <td>{{ buyer.dob }}</td>
+                <td>{{ buyer.email }}</td>
+                <td>{{ buyer.phone_number }}</td>
+                <td>{{ buyer.buyer_address }}</td>
+                <td>
+                    <form action="{{ url_for('admin_delete', user_type='buyer', user_id=buyer.buyer_id) }}" method="post" style="display:inline-block;">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this buyer?');">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Shops</h3>
+    <table class="table table-striped">
+                <thead>
+            <tr>
+                <th>ID</th>
+                <th>Shop Name</th>
+                <th>Owner Name</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>Description</th>
+                <th>Verification Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for shop in shops %}
+            <tr>
+                <td>{{ shop.shop_id }}</td>
+                <td>{{ shop.shop_name }}</td>
+                <td>{{ shop.owner_name }}</td>
+                <td>{{ shop.shop_phone }}</td>
+                <td>{{ shop.shop_address }}</td>
+                <td>{{ shop.shop_email }}</td>
+                <td>{{ shop.shop_description }}</td>
+                <td>
+                    {% if shop.isverified %}
+                        <span class="badge badge-success">Verified</span>
+                    {% else %}
+                        <span class="badge badge-warning">Not Verified</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if not shop.isverified %}
+                    <form action="{{ url_for('verify_shop', shop_id=shop.shop_id) }}" method="post" style="display:inline-block;">
+                        <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Are you sure you want to verify this shop?');">Verify</button>
+                    </form>
+                    {% endif %}
+                    <form action="{{ url_for('admin_delete', user_type='shop', user_id=shop.shop_id) }}" method="post" style="display:inline-block;">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this shop?');">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

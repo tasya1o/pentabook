@@ -1,0 +1,194 @@
+{% extends "customer/base.html" %}
+
+{% block title %}Checkout - Penta Book{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <!-- Order Summary Section -->
+        <div class="col-lg-8">
+            <div class="checkout-card mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="m-0">Order Summary</h4>
+                    <a href="{{ url_for('cart') }}" class="text-decoration-none">
+                        <i class="fas fa-arrow-left me-2"></i>Return to Cart
+                    </a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th class="text-end">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        {% if item.img_url %}
+                                            <img src="{{ url_for('static', filename='uploads/' + item.img_url) }}" 
+                                                 alt="{{ item.book_name }}"
+                                                 class="checkout-item-image me-3">
+                                        {% else %}
+                                            <div class="checkout-item-placeholder me-3">
+                                                <i class="fas fa-book"></i>
+                                            </div>
+                                        {% endif %}
+                                        <div>
+                                            <h6 class="mb-0">{{ item.book_name }}</h6>
+                                            <small class="text-muted">{{ item.desc[:50] }}...</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ format_currency(item.price) }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td class="text-end fw-bold">{{ format_currency(item.price * item.quantity) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Delivery Information -->
+            <div class="checkout-card">
+                <h5 class="mb-4">Delivery Information</h5>
+                <form method="POST" action="{{ url_for('checkout') }}" class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label">Delivery Address</label>
+                        <textarea id="address" name="address" class="form-control" rows="3" required 
+                                  placeholder="Enter your complete delivery address"></textarea>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label class="form-label">Payment Method</label>
+                        <select id="payment_method" name="payment_method" class="form-select" required>
+                            {% for method in payment_methods %}
+                            <option value="{{ method.method_id }}">{{ method.method_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-12 mt-4">
+                        <button type="submit" class="btn btn-burgundy btn-lg w-100">
+                            Place Order
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Order Total Section -->
+        <div class="col-lg-4">
+            <div class="checkout-card order-summary">
+                <h5 class="mb-4">Order Details</h5>
+                
+                <div class="summary-item d-flex justify-content-between mb-3">
+                    <span class="text-muted">Subtotal</span>
+                    <span>{{ format_currency(total) }}</span>
+                </div>
+                
+                <div class="summary-item d-flex justify-content-between mb-3">
+                    <span class="text-muted">Platform Fee</span>
+                    <span>{{ format_currency(platform_fee) }}</span>
+                </div>
+
+                <div class="summary-item d-flex justify-content-between mb-3">
+                    <span class="text-muted">Shipping</span>
+                    <span class="text-success">Free</span>
+                </div>
+
+                <div class="divider my-4"></div>
+
+                <div class="summary-item d-flex justify-content-between align-items-center">
+                    <span class="fw-bold">Total</span>
+                    <span class="total-amount">{{ format_currency(total_with_fee) }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .checkout-card {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    .checkout-item-image {
+        width: 60px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .checkout-item-placeholder {
+        width: 60px;
+        height: 80px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #8B2635;
+    }
+
+    .order-summary {
+        position: sticky;
+        top: 20px;
+    }
+
+    .divider {
+        height: 1px;
+        background: #dee2e6;
+    }
+
+    .total-amount {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #8B2635;
+    }
+
+    .btn-burgundy {
+        background: #8B2635;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+
+    .btn-burgundy:hover {
+        background: #7a1f2d;
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(139, 38, 53, 0.2);
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #8B2635;
+        box-shadow: 0 0 0 0.2rem rgba(139, 38, 53, 0.15);
+    }
+
+    .table th {
+        color: #6c757d;
+        font-weight: 600;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table td {
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .summary-item {
+        font-size: 0.95rem;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,254 @@
+{% extends "customer/base.html" %}
+
+{% block title %}Shop Register - Penta Book{% endblock %}
+
+{% block content %}
+<!-- Main Container -->
+<div class="login-container">
+    <div class="login-card shadow">
+        <div class="row g-0">
+            <!-- Form Section -->
+            <div class="col-md bg-cream">
+                <div class="login-form-container">
+                    <!-- Header -->
+                    <div class="text-end mb-4">
+                        <img src="{{ url_for('static', filename='images/Logo PentaBook.png') }}" 
+                             alt="Logo" 
+                             class="logo-image">
+                    </div>
+
+                    <h1 class="fw-bold mb-2">Register Your Shop</h1>
+                    <p class="text-muted mb-4">Please fill in your shop details</p>
+
+                    <!-- Registration Form -->
+                    <form method="post" action="{{ url_for('shop_register') }}" class="login-form">
+                        {{ form.csrf_token }}
+                        <div class="row">
+                            <!-- First Row -->
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    {{ form.shop_name.label(class="form-control-label") }}
+                                    {{ form.shop_name(class="form-control") }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    {{ form.owner_name.label(class="form-control-label") }}
+                                    {{ form.owner_name(class="form-control") }}
+                                </div>
+                            </div>
+
+                            <!-- Second Row -->
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    {{ form.shop_phone.label(class="form-control-label") }}
+                                    {{ form.shop_phone(class="form-control") }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                    {{ form.shop_email.label(class="form-control-label") }}
+                                    {{ form.shop_email(class="form-control") }}
+                                </div>
+                            </div>
+
+                            <!-- Full Width Fields -->
+                            <div class="col-12 mb-3">
+                                <div class="form-group">
+                                    {{ form.shop_address.label(class="form-control-label") }}
+                                    {{ form.shop_address(class="form-control") }}
+                                </div>
+                            </div>
+
+                            <div class="col-12 mb-3">
+                                <div class="form-group">
+                                    {{ form.shop_description.label(class="form-control-label") }}
+                                    {{ form.shop_description(class="form-control") }}
+                                </div>
+                            </div>
+
+                            <div class="col-12 mb-4">
+                                <div class="form-group">
+                                    {{ form.password.label(class="form-control-label") }}
+                                    {{ form.password(class="form-control") }}
+                                        <button type="button" class="btn btn-link password-toggle">
+                                            <i class="far fa-eye"></i>
+                                        </button>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Section -->
+                        <div class="d-grid mb-4">
+                            <button type="submit" class="btn btn-burgundy btn-lg">Register Shop</button>
+                        </div>
+
+                        <p class="text-center text-muted">
+                            Already have a shop account? 
+                            <a href="{{ url_for('shop_login') }}" class="text-burgundy text-decoration-none fw-bold">
+                                Login here
+                            </a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    :root {
+        --burgundy: #8B2635;
+        --burgundy-light: #BC8F96;
+        --burgundy-lighter: #F2D9DC;
+        --cream: #FDF6F0;
+    }
+    
+    .login-container {
+        min-height: 90vh;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 1rem 2rem;
+    }
+    
+    .login-card {
+        background: white;
+        border-radius: 1.5rem;
+        overflow: hidden;
+        max-width: 1000px;
+        width: 100%;
+        box-shadow: 0 15px 30px rgba(139, 38, 53, 0.1);
+        transform: translateY(-2rem);
+    }
+    
+    .illustration-container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem;
+        background-color: white;
+    }
+    
+    .shapes-illustration {
+        width: 100%;
+        max-width: 300px;
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    .login-form-container {
+        padding: 3rem;
+    }
+    
+    .logo-image {
+        width: 120px;
+        height: auto;
+    }
+    
+    .custom-input {
+        border: none;
+        border-bottom: 2px solid #E5E7EB;
+        border-radius: 0;
+        padding: 0.75rem 0;
+        transition: all 0.3s ease;
+        background-color: transparent;
+    }
+    
+    .custom-input:focus {
+        box-shadow: none;
+        border-color: var(--burgundy);
+    }
+    
+    .form-label {
+        color: #4B5563;
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+    
+    .password-toggle {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6B7280;
+        padding: 0;
+    }
+    
+    .password-toggle:hover {
+        color: var(--burgundy);
+    }
+    
+    .btn-burgundy {
+        background-color: var(--burgundy);
+        color: white;
+        border: none;
+        padding: 0.8rem;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-burgundy:hover {
+        background-color: #7A2030;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(139, 38, 53, 0.2);
+    }
+    
+    .text-burgundy {
+        color: var(--burgundy) !important;
+    }
+    
+    .bg-cream {
+        background-color: var(--cream);
+    }
+    
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+        100% { transform: translateY(0px); }
+    }
+    
+    @media (max-width: 768px) {
+        .login-container {
+            padding: 1rem;
+            min-height: 100vh;
+            align-items: center;
+        }
+    
+        .login-card {
+            transform: none;
+            margin: 0;
+        }
+    
+        .illustration-container {
+            display: none;
+        }
+    
+        .login-form-container {
+            padding: 2rem;
+        }
+    }
+    </style>
+
+<!-- Password Toggle Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const togglePassword = document.querySelector('.password-toggle');
+    const password = document.querySelector('#password');
+
+    if (togglePassword && password) {
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            
+            const icon = this.querySelector('i');
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+        });
+    }
+});
+</script>
+{% endblock %}

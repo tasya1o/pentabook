@@ -1,0 +1,353 @@
+{% extends "customer/base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!-- SECTION 1: HERO SECTION -->
+<div class="container py-5">
+    <div class="row align-items-center py-5">
+        <!-- Hero Left Content -->
+        <div class="col-md-6">
+            <div class="badge bg-burgundy-light text-burgundy px-3 py-2 mb-3">EXPLORE NOW!</div>
+            <h1 class="display-4 fw-bold mb-4">
+                Transform your journey<br>
+                through <span class="font-italic text-burgundy">reading</span>
+            </h1>
+            <p class="lead text-muted mb-4">
+                From bestselling novels to rare collections, we help you build your perfect library with carefully
+                curated books that inspire, entertain, and enlighten.
+            </p>
+            <div class="d-flex align-items-center gap-3 flex-wrap">
+                <button class="btn btn-burgundy btn-lg">
+                    Get Started <i class="fas fa-arrow-right ms-2"></i>
+                </button>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="text-burgundy">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <span class="text-muted small">4.9 from 200+ reviews</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hero Right Stats Grid -->
+        <div class="col-md-6">
+            <div class="grid-stats">
+                <!-- Stats Cards -->
+                <div class="stats-card position-relative p-0 overflow-hidden">
+                    <img src="{{ url_for('static', filename='images/Books.jpeg') }}" alt="Book Preview"
+                        class="w-100 h-100 rounded object-fit-cover">
+                </div>
+
+                <div class="stats-card bg-cream">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <span class="h2 mb-0 text-burgundy">5000+</span>
+                        <i class="fas fa-book text-burgundy"></i>
+                    </div>
+                    <p class="text-burgundy mt-3 mb-0">Book Collections</p>
+                </div>
+
+                <div class="stats-card bg-light">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <div class="avatar-group">
+                            <div class="avatar bg-burgundy"></div>
+                            <div class="avatar bg-burgundy-light"></div>
+                            <div class="avatar bg-burgundy-lighter"></div>
+                        </div>
+                        <i class="fas fa-arrow-right text-burgundy small"></i>
+                    </div>
+                    <p class="text-muted mb-0">Active Readers</p>
+                </div>
+
+                <div class="stats-card bg-burgundy text-white">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="h5 mb-0">Monthly Sales</span>
+                        <i class="fas fa-trending-up"></i>
+                    </div>
+                    <div class="chart-container mb-2">
+                        <svg viewBox="0 0 100 40" class="w-100">
+                            <path d="M0 35 L10 30 L20 32 L30 25 L40 28 L50 20 L60 22 L70 15 L80 18 L90 10 L100 12"
+                                fill="none" stroke="white" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <p class="small mb-0">1.2k+ books this month</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SECTION 2: FEATURES SECTION -->
+<section class="features-section py-5 bg-light">
+    <div class="container">
+        <!-- Features Header -->
+        <div class="row mb-5 mx-2">
+            <div class="col-lg-6">
+                <p class="text-muted lead">
+                    Discover a comprehensive book shopping system designed to enhance your reading experience and
+                    streamline your book collection management.
+                </p>
+            </div>
+            <div class="col-lg-6 text-end">
+                <div class="badge text-burgundy bg-burgundy-lighter px-3 py-2 mb-3">BOOK SERVICES</div>
+                <h2 class="display-5 fw-bold mb-3">Experience that grows with your reading journey.</h2>
+            </div>
+        </div>
+
+        <!-- Features Cards -->
+        <div class="row g-4 mx-2">
+            <div class="col-md-4">
+                <div class="feature-card p-4 bg-white rounded-3 h-100">
+                    <div class="icon-wrapper mb-4">
+                        <i class="fas fa-bookmark text-burgundy fs-2"></i>
+                    </div>
+                    <h3 class="h4 mb-3">Smart Recommendations</h3>
+                    <p class="text-muted mb-0">
+                        Get personalized book recommendations based on your reading history and preferences, helping you
+                        discover your next favorite read.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card p-4 bg-white rounded-3 h-100">
+                    <div class="icon-wrapper mb-4">
+                        <i class="fas fa-users text-burgundy fs-2"></i>
+                    </div>
+                    <h3 class="h4 mb-3">Multiple Formats</h3>
+                    <p class="text-muted mb-0">
+                        Access your favorite books in various formats - physical copies, e-books, and audiobooks - all
+                        managed from a single account.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="feature-card p-4 bg-white rounded-3 h-100">
+                    <div class="icon-wrapper mb-4">
+                        <i class="fas fa-shield-alt text-burgundy fs-2"></i>
+                    </div>
+                    <h3 class="h4 mb-3">Secure Library</h3>
+                    <p class="text-muted mb-0">
+                        Keep track of your book collection with secure digital management, including purchase history
+                        and reading progress tracking.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SECTION 3: POPULAR BOOKS -->
+<section class="popular-books py-5">
+    <div class="container">
+        <h2 class="fw-bold mb-4">Popular Books For You!</h2>
+
+        <div class="row g-4">
+            <!-- Book Cards -->
+            {% for book in [
+                {'title': 'The Midnight Library', 'author': 'Matt Haig', 'price': '24.99', 'reviews': '432', 'image': 'atomic-habit.png'},
+                {'title': 'Atomic Habits', 'author': 'James Clear', 'price': '19.99', 'reviews': '1,254', 'image': 'atomic-habit.png'},
+                {'title': 'Project Hail Mary', 'author': 'Andy Weir', 'price': '29.99', 'reviews': '879', 'image': 'dune.jpeg'},
+                {'title': 'Dune', 'author': 'Frank Herbert', 'price': '15.99', 'reviews': '654', 'image': 'dune.jpeg'}
+            ] %}
+            <div class="col-6 col-md-3">
+                <div class="book-card bg-soft-gray rounded-3 p-3 h-100">
+                    <div class="position-relative mb-3">
+                        <img src="{{ url_for('static', filename='images/' + book.image) }}" alt="{{ book.title }}"
+                            class="w-100 rounded-3 book-image">
+                        <button class="btn-wishlist">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <h5 class="book-title mb-1">{{ book.title }}</h5>
+                    <p class="text-muted small mb-2">{{ book.author }}</p>
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="text-warning me-1">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <small class="text-muted">({{ book.reviews }})</small>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold text-burgundy">${{ book.price }}</span>
+                        <button class="btn btn-sm btn-outline-burgundy">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CSS STYLES -->
+<style>
+    /* Color Variables */
+    :root {
+        --burgundy: #8B2635;
+        --burgundy-light: #BC8F96;
+        --burgundy-lighter: #F2D9DC;
+        --cream: #FDF6F0;
+        --soft-gray: #F8F9FA;
+    }
+
+    /* Hero Section Styles */
+    .bg-burgundy {
+        background-color: var(--burgundy) !important;
+    }
+
+    .bg-burgundy-light {
+        background-color: var(--burgundy-light) !important;
+    }
+
+    .bg-burgundy-lighter {
+        background-color: var(--burgundy-lighter) !important;
+    }
+
+    .bg-cream {
+        background-color: var(--cream) !important;
+    }
+
+    .text-burgundy {
+        color: var(--burgundy) !important;
+    }
+
+    /* Button Styles */
+    .btn-burgundy {
+        background-color: var(--burgundy);
+        color: white;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-burgundy:hover {
+        background-color: #6B1D29;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* Stats Grid Styles */
+    .grid-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        max-width: 600px;
+    }
+
+    .stats-card {
+        padding: 1.5rem;
+        border-radius: 1rem;
+        height: 200px;
+        transition: all 0.3s ease;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(139, 38, 53, 0.1);
+    }
+
+    /* Features Section Styles */
+    .features-section {
+        background-color: var(--cream) !important;
+        border-radius: 20px;
+    }
+
+    .feature-card {
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(139, 38, 53, 0.1);
+    }
+
+    .icon-wrapper {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background-color: var(--burgundy-lighter);
+    }
+
+    /* Book Card Styles */
+    .book-card {
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .book-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(139, 38, 53, 0.1);
+    }
+
+    .book-image {
+        aspect-ratio: 3/4;
+        object-fit: cover;
+    }
+
+    .btn-wishlist {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: white;
+        border: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .btn-wishlist:hover {
+        background: var(--burgundy);
+        color: white;
+    }
+
+    .btn-outline-burgundy {
+        color: var(--burgundy);
+        border-color: var(--burgundy);
+    }
+
+    .btn-outline-burgundy:hover {
+        background-color: var(--burgundy);
+        color: white;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .grid-stats {
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+
+        .stats-card {
+            height: 160px;
+        }
+
+        .feature-card {
+            text-align: center;
+        }
+
+        .icon-wrapper {
+            margin: 0 auto;
+        }
+
+        .book-title {
+            font-size: 0.9rem;
+        }
+    }
+</style>
+{% endblock %}

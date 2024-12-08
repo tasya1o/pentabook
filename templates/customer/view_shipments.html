@@ -1,0 +1,177 @@
+{% extends "customer/base.html" %}
+
+{% block title %}View Shipments{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-header bg-white">
+        <h5 class="card-title mb-0">Shipments</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Shipment ID</th>
+                        <th>Tracking Number</th>
+                        <th>Shipment Date</th>
+                        <th>Received Date</th>
+                        <th>Status</th>
+                        <th>Order Date</th>
+                        <th>Delivery Address</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for shipment in shipments %}
+                    <tr>
+                        <td>{{ shipment['shipment_id'] }}</td>
+                        <td>{{ shipment['tracking_no'] }}</td>
+                        <td>{{ shipment['shipment_date'] }}</td>
+                        <td>{{ shipment['received_date'] }}</td>
+                        <td>{{ shipment['status'] }}</td>
+                        <td>{{ shipment['order_date'] }}</td>
+                        <td>{{ shipment['delivery_address'] }}</td>
+                        <td>
+                            <a href="{{ url_for('track_shipment_route', tracking_no=shipment['tracking_no']) }}" class="btn btn-info">Track</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="8" class="text-center">No shipments found for you at this time.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<a href="{{ url_for('buyer_index') }}" class="btn btn-burgundy btn-md">Back to Dashboard</a>
+
+<style>
+    :root {
+    --burgundy: #8B2635;
+    --burgundy-light: #BC8F96;
+    --burgundy-lighter: #F2D9DC;
+    --cream: #FDF6F0;
+}
+
+.welcome-section {
+    margin-bottom: 2rem;
+}
+
+.welcome-section h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Card for the Shipment Table */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.card-header {
+    border-bottom: 1px solid #eee;
+    padding: 1rem 1.5rem;
+    background-color: #fff;
+}
+
+.card-header h5 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    border-top: none;
+    font-weight: 500;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.badge {
+    padding: 0.5em 1em;
+    font-weight: 500;
+    background-color: #f0ad4e;
+    color: white;
+    border-radius: 12px;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: white;
+    padding: 8px 16px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+    border-color: #138496;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+.btn-burgundy {
+    background: var(--burgundy);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-burgundy:hover {
+    background: #7a1f2d;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(139, 38, 53, 0.2);
+}
+
+/* Table Row Styling */
+.table tbody tr td,
+.table tbody tr th {
+    padding: 1rem;
+}
+
+@media (max-width: 768px) {
+    .stats-card {
+        padding: 1rem;
+    }
+    
+    .stats-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .stats-info h3 {
+        font-size: 1.25rem;
+    }
+
+    .table th,
+    .table td {
+        font-size: 0.9rem;
+        padding: 0.75rem;
+    }
+}
+
+</style>
+{% endblock %}

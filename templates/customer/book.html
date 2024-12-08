@@ -1,0 +1,282 @@
+{% extends "customer/base.html" %}
+
+{% block title %}{{ book.book_name }} – Penta Book{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="book-detail-card">
+        <div class="row g-0">
+            <div class="col-lg-4">
+                <div class="book-image-wrapper">
+                    {% if book.img_url %}
+                        <img src="{{ url_for('static', filename='uploads/' + book.img_url) }}" 
+                             alt="{{ book.book_name }}"
+                             class="book-cover">
+                    {% else %}
+                        <div class="no-image-placeholder">
+                            <i class="fas fa-book fa-4x text-muted"></i>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="book-info-section">
+                    <nav aria-label="breadcrumb" class="mb-4">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="{{ url_for('buyer_index') }}">Books</a></li>
+                            <li class="breadcrumb-item active">{{ category_name or 'Uncategorized' }}</li>
+                        </ol>
+                    </nav>
+
+                    <h1 class="book-title">{{ book.book_name }}</h1>
+                    <p class="author-text">by <span class="author-name">{{ book.author }}</span></p>
+
+                    <div class="rating-section">
+                        <div class="stars">★★★★★</div>
+                        <span class="rating-count">(0 reviews)</span>
+                    </div>
+
+                    <div class="price-badge">
+                        <span class="current-price">{{ format_currency(book.price) }}</span>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <form action="{{ url_for('add_to_cart', book_id=book.book_id) }}" method="post" class="cart-form">
+                        <div class="quantity-control">
+                            <label class="quantity-label">Quantity</label>
+                            <div class="quantity-buttons">
+                                <button type="button" class="qty-btn" onclick="decrementQuantity()">−</button>
+                                <input type="number" name="quantity" value="1" min="1" class="quantity-input">
+                                <button type="button" class="qty-btn" onclick="incrementQuantity()">+</button>
+                            </div>
+                        </div>
+                        <button type="submit" class="add-to-cart-btn">
+                            <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                        </button>
+                    </form>
+
+                    <div class="divider"></div>
+
+                    <div class="description-section">
+                        <h5 class="section-title">Description</h5>
+                        <p class="description-text">{{ book.desc }}</p>
+                    </div>
+
+                    <div class="book-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Category</span>
+                            <span class="meta-value">{{ category_name or 'Uncategorized' }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .book-detail-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        padding: 40px;
+    }
+
+    .book-image-wrapper {
+        position: relative;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        aspect-ratio: 3/4;
+    }
+
+    .book-cover {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .no-image-placeholder {
+        width: 100%;
+        height: 100%;
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .book-info-section {
+        padding: 0 30px;
+    }
+
+    .book-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2d3436;
+        margin-bottom: 0.5rem;
+    }
+
+    .author-text {
+        font-size: 1.1rem;
+        color: #6c757d;
+        margin-bottom: 1.5rem;
+    }
+
+    .author-name {
+        color: #8B2635;
+        font-weight: 500;
+    }
+
+    .rating-section {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 1.5rem;
+    }
+
+    .stars {
+        color: #ffc107;
+        letter-spacing: 3px;
+        font-size: 1.2rem;
+    }
+
+    .rating-count {
+        color: #6c757d;
+    }
+
+    .price-badge {
+        display: inline-block;
+        background: #f8f9fa;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+    }
+
+    .current-price {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #8B2635;
+    }
+
+    .divider {
+        height: 1px;
+        background: #dee2e6;
+        margin: 2rem 0;
+    }
+
+    .cart-form {
+        display: flex;
+        gap: 20px;
+        align-items: flex-end;
+    }
+
+    .quantity-control {
+        min-width: 150px;
+    }
+
+    .quantity-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #6c757d;
+    }
+
+    .quantity-buttons {
+        display: flex;
+        align-items: center;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .qty-btn {
+        width: 40px;
+        height: 40px;
+        border: none;
+        background: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .qty-btn:hover {
+        background: #f8f9fa;
+    }
+
+    .quantity-input {
+        width: 60px;
+        height: 40px;
+        border: none;
+        text-align: center;
+        font-weight: 500;
+    }
+
+    .add-to-cart-btn {
+        flex-grow: 1;
+        height: 40px;
+        background: #8B2635;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: background-color 0.2s;
+    }
+
+    .add-to-cart-btn:hover {
+        background: #7a1f2d;
+    }
+
+    .section-title {
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .description-text {
+        color: #6c757d;
+        line-height: 1.8;
+    }
+
+    .book-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .meta-item {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .meta-label {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-bottom: 0.3rem;
+    }
+
+    .meta-value {
+        font-weight: 500;
+    }
+
+    .breadcrumb a {
+        color: #8B2635;
+        text-decoration: none;
+    }
+</style>
+
+<script>
+function incrementQuantity() {
+    const input = document.querySelector('.quantity-input');
+    input.value = parseInt(input.value) + 1;
+}
+
+function decrementQuantity() {
+    const input = document.querySelector('.quantity-input');
+    if (parseInt(input.value) > 1) {
+        input.value = parseInt(input.value) - 1;
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "customer/base.html" %}
+
+{% block title %}
+    Payment - Penta Book
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Payment Card Section -->
+    <div class="checkout-card shadow p-4 mb-5">
+        <h4 class="mb-3">Payment for Order #{{ order.order_id }}</h4>
+        
+        <div class="mb-4">
+            <h5 class="text-muted">Order Amount: {{ format_currency(order.total) }}</h5>
+            <!-- <h2 class="text-burgundy">{{ format_currency(order.total) }}</h2> -->
+        </div>
+
+        <form method="POST" action="{{ url_for('payment', order_id=order.order_id) }}">
+            <div class="form-group mb-3">
+                <label for="method" class="form-label">Payment Method</label>
+                <select id="method" name="method" class="form-select mb-2" required>
+                    {% for method in methods %}
+                        <option value="{{ method.method_id }}">{{ method.method_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-12 text-center mt-5 mb-3">
+                <button type="submit" class="btn btn-burgundy btn-lg w-50">
+                    Pay Now
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<style>
+    .btn-burgundy {
+        background: #8B2635;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+
+    .btn-burgundy:hover {
+        background: #7a1f2d;
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(139, 38, 53, 0.2);
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "shop/base_shop.html" %}
+
+{% block title %}Orders{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Orders Management</h1>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Order Id</th>
+                            <th>Customer Id</th>
+                            <th>Order Date</th>
+                            <th>Total</th>
+                            <th>Order Status</th>
+                            <th>Shipment Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for orders in orders %}
+                        <tr>
+                            <td>{{ orders['order_id'] }}</td>
+                            <td>{{ orders['buyer_id'] }}</td>
+                            <td>{{ orders['order_date'] }}</td>
+                            <td>{{ orders['total'] }}</td>
+                            <td>{{ orders['status'] }}</td>
+                            <td>{{ orders['shipment_status'] }}</td>
+                            <td>
+                                <a href="{{ url_for('detail_order', order_id=orders['order_id']) }}" >
+                            <button class="btn btn-sm btn-primary">Detail</button>
+                            </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.table th {
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.badge {
+    padding: 0.5em 0.8em;
+}
+</style>
+{% endblock %}

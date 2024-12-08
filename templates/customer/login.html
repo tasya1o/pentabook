@@ -1,0 +1,251 @@
+{% extends "customer/base.html" %}
+
+{% block title %}Login - Penta Book{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-card">
+        <div class="row g-0">
+            <!-- Left Side - Illustration -->
+            <div class="col-md-6">
+                <div class="illustration-container">
+                    <svg viewBox="0 0 200 200" class="shapes-illustration">
+                        <rect x="60" y="40" width="40" height="80" fill="#8B2635" rx="4"/>
+                        <rect x="90" y="60" width="30" height="70" fill="#111827" rx="4"/>
+                        <circle cx="60" cy="130" r="30" fill="#BC8F96"/>
+                        <rect x="110" y="90" width="30" height="60" fill="#F2D9DC" rx="4"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Right Side - Login Form -->
+            <div class="col-md-6 bg-cream">
+                <div class="login-form-container">
+                    <!-- Logo -->
+                    <div class="text-end mb-4">
+                        <img src="{{ url_for('static', filename='images/Logo PentaBook.png') }}" alt="Logo" class="logo-image">
+                    </div>
+
+                    <!-- Welcome Text -->
+                    <h1 class="fw-bold mb-2">Welcome back!</h1>
+                    <p class="text-muted mb-4">Please enter your details</p>
+
+                    <!-- Login Form -->
+                    <form method="post" action="{{ url_for('login') }}" class="login-form">
+                        {{ form.csrf_token }}
+                        
+                        <!-- Username Input -->
+                        <div class="form-group mb-4">
+                            {{ form.username.label(class="form-label") }}
+                            {{ form.username(class="form-control form-control-lg custom-input", placeholder="Enter your username") }}
+                            {% if form.username.errors %}
+                                {% for error in form.username.errors %}
+                                    <span class="text-danger small">{{ error }}</span>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <!-- Password Input -->
+                        <div class="form-group mb-4">
+                            {{ form.password.label(class="form-label") }}
+                            <div class="position-relative">
+                                {{ form.password(class="form-control form-control-lg custom-input", placeholder="Enter your password") }}
+                                <button type="button" class="btn btn-link password-toggle">
+                                    <i class="far fa-eye"></i>
+                                </button>
+                            </div>
+                            {% if form.password.errors %}
+                                {% for error in form.password.errors %}
+                                    <span class="text-danger small">{{ error }}</span>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid mb-4">
+                            <button type="submit" class="btn btn-burgundy btn-lg">Login</button>
+                        </div>
+                    </form>
+
+                    <!-- Sign Up Link -->
+                    <p class="text-center text-muted">
+                        Don't have an account? 
+                        <a href="{{ url_for('register') }}" class="text-burgundy text-decoration-none fw-bold">Sign Up</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col text-center">
+        <h1 class="my-4">Welcome to the Bookstore</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-md-6 mb-3 text-center">
+        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg btn-block">Register</a>
+    </div>
+    <div class="col-lg-6 col-md-6 mb-3 text-center">
+        <a href="{{ url_for('login') }}" class="btn btn-secondary btn-lg btn-block">Login</a>
+    </div>
+    <div class="col-lg-6 col-md-6 mb-3 text-center">
+        <a href="{{ url_for('shop_register') }}" class="btn btn-primary btn-lg btn-block">Register as Shop</a>
+    </div>
+    <div class="col-lg-6 col-md-6 mb-3 text-center">
+        <a href="{{ url_for('shop_login') }}" class="btn btn-secondary btn-lg btn-block">Login as Shop</a>
+    </div>
+</div>
+
+<style>
+:root {
+    --burgundy: #8B2635;
+    --burgundy-light: #BC8F96;
+    --burgundy-lighter: #F2D9DC;
+    --cream: #FDF6F0;
+}
+
+.login-container {
+    min-height: 90vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 1rem 2rem;
+}
+
+.login-card {
+    background: white;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    max-width: 1000px;
+    width: 100%;
+    box-shadow: 0 15px 30px rgba(139, 38, 53, 0.1);
+    transform: translateY(-2rem);
+}
+
+.illustration-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    background-color: white;
+}
+
+.shapes-illustration {
+    width: 100%;
+    max-width: 300px;
+    animation: float 6s ease-in-out infinite;
+}
+
+.login-form-container {
+    padding: 3rem;
+}
+
+.logo-image {
+    width: 120px;
+    height: auto;
+}
+
+.custom-input {
+    border: none;
+    border-bottom: 2px solid #E5E7EB;
+    border-radius: 0;
+    padding: 0.75rem 0;
+    transition: all 0.3s ease;
+    background-color: transparent;
+}
+
+.custom-input:focus {
+    box-shadow: none;
+    border-color: var(--burgundy);
+}
+
+.form-label {
+    color: #4B5563;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6B7280;
+    padding: 0;
+}
+
+.password-toggle:hover {
+    color: var(--burgundy);
+}
+
+.btn-burgundy {
+    background-color: var(--burgundy);
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.btn-burgundy:hover {
+    background-color: #7A2030;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(139, 38, 53, 0.2);
+}
+
+.text-burgundy {
+    color: var(--burgundy) !important;
+}
+
+.bg-cream {
+    background-color: var(--cream);
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+}
+
+@media (max-width: 768px) {
+    .login-container {
+        padding: 1rem;
+        min-height: 100vh;
+        align-items: center;
+    }
+
+    .login-card {
+        transform: none;
+        margin: 0;
+    }
+
+    .illustration-container {
+        display: none;
+    }
+
+    .login-form-container {
+        padding: 2rem;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const togglePassword = document.querySelector('.password-toggle');
+    const password = document.querySelector('#password');
+
+    if (togglePassword && password) {
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            
+            const icon = this.querySelector('i');
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+        });
+    }
+});
+</script>
+{% endblock %}

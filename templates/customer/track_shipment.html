@@ -1,0 +1,48 @@
+{% extends "customer/base.html" %}
+
+{% block title %}Track Shipment{% endblock %}
+
+{% block content %}
+<h1>Shipment Tracking Details</h1>
+
+{% if tracking_info %}
+    <table class="table">
+        <tr>
+            <th>Tracking Number</th>
+            <td>{{ tracking_info.tracking_no }}</td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>{{ tracking_info.status }}</td>
+        </tr>
+        <tr>
+            <th>Shipped Date</th>
+            <td>{{ tracking_info.shipment_date }}</td>
+        </tr>
+        <tr>
+            <th>Received Date</th>
+            <td>{{ tracking_info.received_date }}</td>
+        </tr>
+        <tr>
+            <th>Shipment History</th>
+            <td>
+                <ul>
+                {% for event in tracking_info.history %}
+                    <li>{{ event.date }} - {{ event.location }} - {{ event.description }}</li>
+                {% endfor %}
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <!-- Button to resolve the shipment -->
+    <form action="{{ url_for('resolve_shipment', tracking_no=tracking_info.tracking_no) }}" method="post" style="display:inline;">
+        <button type="submit" class="btn btn-warning">Resolve Shipment</button>
+    </form>
+{% else %}
+    <p>No tracking information available.</p>
+{% endif %}
+
+<a href="{{ url_for('buyer_view_shipments') }}" class="btn btn-secondary">Back to Shipments</a>
+
+{% endblock %}

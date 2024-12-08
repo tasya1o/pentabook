@@ -1,0 +1,185 @@
+{% extends "shop/base_shop.html" %}
+
+{% block title %}Order Detail{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    {% for order in orders %}
+    <!-- Order Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-1">Order #{{ order['order_id'] }}</h1>
+            <p class="text-muted mb-0">{{ order['order_date'] }}</p>
+        </div>
+        <form action="{{ url_for('create_shipment_route', order_id=order['order_id']) }}" method="POST">
+            <button type="submit" class="btn btn-burgundy">
+                <i class="fas fa-truck me-2"></i>Process Shipment
+            </button>
+        </form>
+    </div>
+
+    <!-- Order Details Cards -->
+    <div class="row g-4">
+        <!-- Customer Info -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-3">
+                        <h5 class="card-title">Customer Details</h5>
+                        <span class="badge bg-{{ 'success' if order['status'] == 'completed' else 'warning' }} rounded-pill">
+                            {{ order['status']|title }}
+                        </span>
+                    </div>
+                    <div class="customer-info">
+                        <div class="info-item">
+                            <span class="info-label">Customer Name</span>
+                            <span class="info-value">{{ order['buyer_name'] }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Delivery Address</span>
+                            <span class="info-value">{{ order['delivery_address'] }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Order Summary</h5>
+                    <div class="summary-items">
+                        <div class="summary-item">
+                            <span class="item-label">Book</span>
+                            <span class="item-value">{{ order['book_name'] }}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="item-label">Unit Price</span>
+                            <span class="item-value">Rp {{ '{:,.0f}'.format(order['price']) }}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="item-label">Quantity</span>
+                            <span class="item-value">{{ order['quantity'] }}</span>
+                        </div>
+                        <div class="summary-item total">
+                            <span class="item-label">Total Price</span>
+                            <span class="item-value">Rp {{ '{:,.0f}'.format(order['total_price']) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Info -->
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Payment Details</h5>
+                    <div class="payment-info">
+                        <div class="total-amount mb-3">
+                            <span class="amount-label">Total Amount</span>
+                            <span class="amount-value">Rp {{ '{:,.0f}'.format(order['total']) }}</span>
+                        </div>
+                        <div class="payment-status">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Payment Completed
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    }
+
+    .card-title {
+        color: #2d3436;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .btn-burgundy {
+        background-color: #8B2635;
+        border: none;
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        transition: all 0.2s;
+    }
+
+    .btn-burgundy:hover {
+        background-color: #7a1f2d;
+        transform: translateY(-1px);
+    }
+
+    .badge {
+        padding: 0.6em 1em;
+        font-weight: 500;
+    }
+
+    .info-item, .summary-item {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+    }
+
+    .info-label, .item-label {
+        font-size: 0.875rem;
+        color: #6c757d;
+        margin-bottom: 0.3rem;
+    }
+
+    .info-value, .item-value {
+        font-weight: 500;
+        color: #2d3436;
+    }
+
+    .total {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .total .item-value {
+        color: #8B2635;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .payment-info .total-amount {
+        text-align: center;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+
+    .amount-label {
+        display: block;
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .amount-value {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #8B2635;
+    }
+
+    .payment-status {
+        text-align: center;
+        color: #198754;
+        font-weight: 500;
+    }
+
+</style>
+{% endblock %}

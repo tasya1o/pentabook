@@ -1,0 +1,57 @@
+{% extends "shop/base_shop.html" %}
+
+{% block title %}Shipments{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">Shipments Management</h1>
+    </div>
+
+    <!-- Shipment Table -->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Shipment ID</th>
+                            <th>Shipment Date</th>
+                            <th>Shipment Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for shipment in shipments %}
+                        <tr>
+                            <td>{{ shipment['order_id'] }}</td>
+                            <td>{{ shipment['shipment_id'] }}</td>
+                            <td>{{ shipment['shipment_date'] }}</td>
+                            <td>{{ shipment['status'] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.table th {
+    font-weight: 500;
+    color: #6c757d;
+}
+
+.badge {
+    padding: 0.5em 0.8em;
+}
+</style>
+{% endblock %}
